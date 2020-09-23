@@ -1,7 +1,11 @@
+//made by Kristian (Datamatiker 2020 team C)
+
+//I made a few changes to suit my own preferences
+
 ArrayList <Particle> particles;
-float magnitude = 300;
-int opacity = 7;
-int number = 40;
+float magnitude = 150; //decides how close particles have to be to spark a line to each other
+int opacity = 50; //decided how the opacity works
+int number = 20; //number of particles
 
 
 
@@ -61,4 +65,15 @@ void checkCollisions() {
   }
   particles.removeAll(toDie);
   particles.addAll(toDouble);
+}
+
+void keyPressed(){
+  if(key == 'r' || key == 'R'){
+    exit();
+  }
+  if(key == ' ' || key == ' '){
+    for (int i = 0; i < 10; i++) {
+    particles.add(new Particle(random(width), random(height)));
+  }
+  }
 }

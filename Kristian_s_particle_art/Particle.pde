@@ -15,8 +15,8 @@ class Particle {
   }
   
   void updateParticle() {
-    this.velx += random(-0.1, 0.1);
-    this.vely += random(-0.1, 0.1);
+    this.velx += random(-1, 1);
+    this.vely += random(-1, 1);
     
     this.x += this.velx;
     this.y += this.vely;
@@ -25,9 +25,8 @@ class Particle {
   }
   
   void displayParticle() {
-    stroke(255-vely*100, 0, 255-velx*10,random(200,255));
-    fill(255,100,0,255);
-    //ellipse(x,y,20,20);
-  
+    stroke(255-vely*100, 200-velx-vely*50, 255-velx*75,random(200,255));
+    fill(255,200,50,255);
+    //ellipse(x,y,20,20); 
   }
 }
