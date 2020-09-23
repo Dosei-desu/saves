@@ -13,7 +13,7 @@ float y = 0;
 float size = 50;
 float rot = 0;
 float incrRot = random(0.005,0.01);
-float incrY = random(0.05, 0.5);
+float incrY = random(0.05, 0.1);
 color colourChoice = color(random(255),random(255),random(255));
 
 void setup(){
@@ -59,7 +59,7 @@ void reset(){
   rot = 0;
   colourChoice = color(random(255),random(255),random(255));
   incrRot = random(0.005,0.01);
-  incrY = random(0.05, 0.5);
+  incrY = random(0.05, 0.1);
   background(0);
 }
 
@@ -69,7 +69,7 @@ void mouseClicked(){
   }
   if(mouseButton == LEFT){
     incrRot = random(0.005,0.01);
-    incrY = random(0.05, 0.5);
+    incrY = random(0.05, 0.1);
   }
   if(mouseButton == CENTER){
     exit();
