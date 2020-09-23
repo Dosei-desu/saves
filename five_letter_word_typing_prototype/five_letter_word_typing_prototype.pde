@@ -2,15 +2,18 @@
 
 ArrayList<String> fiveLetterWord = new ArrayList<String>(); 
 int counter = 0;
+color bgCol = color(0,0,0);
+color txtCol = color(0,200,0);
 
 
 void setup(){
-  size(800,800);
+  size(400,400);
 }
 
 void draw(){
   translate(width/2,height/2);
-  background(255);
+  background(bgCol);
+  strokeWeight(2);
   
   typeWord();
   compareWord();
@@ -19,7 +22,7 @@ void draw(){
 
 void typeWord(){
   constrain(counter,0,5);
-  fill(0);
+  fill(txtCol);
   textAlign(CENTER,BOTTOM);
   textSize(25);
   if(counter >= 1) text(fiveLetterWord.get(0),-50,0);
@@ -30,44 +33,75 @@ void typeWord(){
 }
 
 void keyPressed(){
+  //DECLARE MACHINE----------------------------
   if(key != keyCode && counter < 5){
     String temp = ""+key;
     fiveLetterWord.add(temp.toUpperCase());
     counter += 1;
   }
-  if(keyCode == BACKSPACE){
-    fiveLetterWord.removeAll(fiveLetterWord);
-    counter = 0;
+  //--------------------------------------------
+  //reset
+  if(keyCode == BACKSPACE){ 
+    reset();
   }
 }
 
-void compareWord(){  
-  //if word == "WORLD"
-  if(counter >= 5){
-    if(fiveLetterWord.get(0).equals("W") &&
-    fiveLetterWord.get(1).equals("O") &&
-    fiveLetterWord.get(2).equals("R") &&
-    fiveLetterWord.get(3).equals("L") &&
-    fiveLetterWord.get(4).equals("D"))
-    {
-      fill(0);
-      textAlign(CENTER,BOTTOM);
-      textSize(25);
-      text("H E L L O",0,-50);
-    }
+void reset(){
+  fiveLetterWord.removeAll(fiveLetterWord);
+  counter = 0;
+  bgCol = color(0,0,0);
+  txtCol = color(0,200,0);
+}
+
+boolean compareHelper(String _1, String _2, String _3, String _4, String _5){
+  if(fiveLetterWord.get(0).equals(_1) &&
+    fiveLetterWord.get(1).equals(_2) &&
+    fiveLetterWord.get(2).equals(_3) &&
+    fiveLetterWord.get(3).equals(_4) &&
+    fiveLetterWord.get(4).equals(_5))
+  {
+    return true;
   }
-  //if word == "HELLO"
-  if(counter >= 5){
-    if(fiveLetterWord.get(0).equals("H") &&
-    fiveLetterWord.get(1).equals("E") &&
-    fiveLetterWord.get(2).equals("L") &&
-    fiveLetterWord.get(3).equals("L") &&
-    fiveLetterWord.get(4).equals("O"))
-    {
-      fill(0);
-      textAlign(CENTER,BOTTOM);
-      textSize(25);
+  return false;
+}
+
+void compareWord(){  
+  textAlign(CENTER,BOTTOM);
+  textSize(25);
+  
+  if(counter >= 5){ //only compare when the ArrayList is full (to avoid outOfBounds errors)
+  //---------------------------------------------------------------------------------------  
+    //if word == "WORLD"
+    if(compareHelper("W","O","R","L","D")){
+      txtCol = color(75,75,255);
+      fill(txtCol);
+      text("H E L L O",0,-50);
+    }else
+    
+    //if word == "HELLO"
+    if(compareHelper("H","E","L","L","O")){
+      txtCol = color(75,75,255);
+      fill(txtCol);
       text("W O R L D",0,50);
+    }else
+    
+    //if word == "EXIT'"
+    if(compareHelper("E","X","I","T","'")){
+      exit();
+    }else
+    
+    //if word == "RESET"
+    if(compareHelper("R","E","S","E","T")){
+      reset();
+    }else
+    {
+      fill(200,0,0);
+      stroke(200,0,0);
+      strokeWeight(5);
+      line(-65,-12.5,65,-12.5);
+      text("N O T",0,-50);
+      text("F O U N D",0,50);
     }
+  //---------------------------------------------------------------------------------------  
   }
 }
