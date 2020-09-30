@@ -8,8 +8,9 @@ int[] scrambledArray = new int[50];
 int target = 9;
 
 void setup(){
+  surface.setVisible(false);
   for(int n = 0; n < scrambledArray.length; n++){
-    scrambledArray[n] = (int)random(15);
+    scrambledArray[n] = (int)random(10);
   }
   scrambledArray = sort(scrambledArray);
   
@@ -19,10 +20,10 @@ void setup(){
     println("Target Not Found.");
   }else{
     println("Target is number "+res+" on the list.");
-    int i = 1;
+    int i = 0;
     while(scrambledArray[res+i] == target && res+i < scrambledArray.length-1){
+      ++i;
       println("Target is also number "+(res+i)+" on the list.");
-      i++;
     }
   }
 }

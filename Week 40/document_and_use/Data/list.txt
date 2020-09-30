@@ -1,0 +1,13 @@
+This
+is
+a
+list
+of
+words
+to
+use
+in
+a
+loadStrings()
+example
+.
