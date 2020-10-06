@@ -19,9 +19,8 @@ public class Main {
         users.add(new Login("A","B",100000));
 
         //Login user[] = {new Login("Kris","uniC0rnF4rts"), new Login("Kasper","y3ll0w")};
-
+        System.out.println("Please enter username:");
         while(running) {
-            System.out.println("Please enter username:");
             //keyboard input
             String typing = input.nextLine();
 
