@@ -1,7 +1,8 @@
 public class Bank {
-    private int defaultCapital = 1000;
+    private long defaultCapital = 0;
+
     //setters
-    protected void withdraw(int num){
+    protected void withdraw(long num){
         if(num > 0 && defaultCapital-num >= 0){
             this.defaultCapital -= num;
         }else{
@@ -9,15 +10,20 @@ public class Bank {
         }
     }
 
-    protected void deposit(int num){
+    protected void deposit(long num){
         if(num > 0){
             this.defaultCapital += num;
         }else{
             System.out.println("This action is not possible!");
         }
     }
+
     //getters
-    protected int viewAccount() {
+    protected long viewAccount() {
         return defaultCapital;
+    }
+
+    protected void setCapital(long num){
+        defaultCapital = num;
     }
 }

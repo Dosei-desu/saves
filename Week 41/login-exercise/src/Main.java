@@ -1,9 +1,9 @@
 //Changes to be made:
 /*
-- Make the users part of an array so that you only need one if statement
 - Make a logout function
 */
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -11,60 +11,54 @@ public class Main {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         boolean running = true;
-        Login userOne = new Login();
-        Login userTwo = new Login();
-        userOne.name("Kris");
-        userOne.pass("uniC0rnF4rts");
-        userTwo.name("Kasper");
-        userTwo.pass("y3ll0w");
+
+        //users
+        ArrayList<Login> users = new ArrayList<Login>();
+        users.add(new Login("Kris","uniC0rnF4rts",100));
+        users.add(new Login("Kasper","y3ll0w",0));
+        users.add(new Login("A","B",100000));
+
+        //Login user[] = {new Login("Kris","uniC0rnF4rts"), new Login("Kasper","y3ll0w")};
 
         while(running) {
+            System.out.println("Please enter username:");
             //keyboard input
             String typing = input.nextLine();
-            if (typing.equals("q")) {
-                System.out.println("Shutting down.");
-                running = false;
-            } else {
-                //login checker
-                if (typing.toLowerCase().equals(userOne.getName().toLowerCase())) {
+
+            //login checker
+            for (int i = 0; i < users.size(); i++) {
+                if (typing.toLowerCase().equals(users.get(i).getName().toLowerCase())) {
                     System.out.println("Name matches database!");
-                    userOne.setNameCheck(true);
-                } else if (typing.toLowerCase().equals(userTwo.getName().toLowerCase())) {
-                    System.out.println("Name matches database!");
-                    userTwo.setNameCheck(true);
+                    users.get(i).setNameCheck(true);
+                    System.out.println("Please enter password:");
                 }
             }
             //password checkers
-            if (userOne.getNameCheck()) {
-                if (typing.equals(userOne.getPass())) {
-                    System.out.println("Password correct!\nWelcome " + userOne.getName() + ".");
-                    userOne.setLoggedIn(true);
-                }
-            }
-            if (userTwo.getNameCheck()) {
-                if (typing.equals(userTwo.getPass())) {
-                    System.out.println("Password correct!\nWelcome " + userTwo.getName() + ".");
-                    userTwo.setLoggedIn(true);
+            for (int i = 0; i < users.size(); i++) {
+                if (users.get(i).getNameCheck()) {
+                    if (typing.equals(users.get(i).getPass())) {
+                        System.out.println("Password correct!\nWelcome " + users.get(i).getName() + ".");
+                        users.get(i).setLoggedIn(true);
+                    }
                 }
             }
             //account stuff (withdraw / deposit / view balance)
-            if (userOne.isLoggedIn()) {
-                System.out.println("Your current balance is: " + userOne.viewAccount());
-                int num = input.nextInt();
-                if (num < 0) {
-                    userOne.withdraw(num * -1);
-                } else {
-                    userOne.deposit(num);
+            for (int i = 0; i < users.size(); i++) {
+                if (users.get(i).isLoggedIn()) {
+                    System.out.println("Your current balance is: " + users.get(i).viewAccount());
+                    int num = input.nextInt();
+                    if (num < 0) {
+                        users.get(i).withdraw(num * -1);
+                    } else {
+                        users.get(i).deposit(num);
+                    }
                 }
             }
-            if (userTwo.isLoggedIn()) {
-                System.out.println("Your current balance is: " + userTwo.viewAccount());
-                int num = input.nextInt();
-                if (num < 0) {
-                    userTwo.withdraw(num * -1);
-                } else {
-                    userTwo.deposit(num);
-                }
+
+            //close cmd
+            if (typing.equals("q")) {
+                System.out.println("Shutting down.");
+                running = false;
             }
         }
     }

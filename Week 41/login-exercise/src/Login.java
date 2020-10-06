@@ -3,15 +3,14 @@ public class Login extends Bank{
     private String pass = "";
     private boolean nameCorrect = false;
     private boolean loggedIn = false;
-    //setters
-    protected void name(String _name){
+
+    Login(String _name, String _pass, long _money){
         this.name = _name;
-    }
-
-    protected void pass(String _pass){
         this.pass = _pass;
+        setCapital(_money);
     }
 
+    //setters
     protected void setNameCheck(boolean _nameCorrect){
         this.nameCorrect = _nameCorrect;
     }
@@ -19,6 +18,7 @@ public class Login extends Bank{
     protected void setLoggedIn(boolean _loggedIn){
         this.loggedIn = _loggedIn;
     }
+
     //getters
     protected String getName(){
         return name;
