@@ -9,6 +9,7 @@ public class Main {
         users.add(new User("Kris","digBick#ttuB",666));
         users.add(new User("Kirbs","digSmol",0));
         users.add(new User("test","test",1000));
+        users.add(new User("Søren","pandaPenis",12));
 
         login(users);
     }
@@ -34,8 +35,8 @@ public class Main {
             for (int i = 0; i < users.size(); i++) {
                 if (compare(userName, users.get(i).getName()) && compare(passWord, users.get(i).getPass())) {
                     flag = true;
-                    System.out.println("\nWelcome "+ users.get(i).getName()+".\n0 -------- Logout" +
-                    "\nNum < 0 -- Withdraw " + "that amount\n" + "Num > 0 -- Deposit that amount\n");
+                    System.out.println("\nWelcome "+ users.get(i).getName()+".\n0 -------- Logout"+
+                    "\nNum < 0 -- Withdraw that amount\nNum > 0 -- Deposit that amount\n");
                     account(users.get(i),users);
                 }
             }
