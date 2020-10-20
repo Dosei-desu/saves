@@ -4,23 +4,121 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
-        Scanner cmd = new Scanner(System.in);
-        taxiConsole(10,cmd);
-        consoleInterface();
-    }
+        //number of taxis
+        int taxiNum = 10;
 
-    //takes a number and adds that number of Taxi objects to an ArrayList
-    //also handles the method calls for each individual Taxi object
-    public static void taxiConsole(int taxiNum, Scanner input){
+        //creates empty Taxi ArrayList
         ArrayList<Taxi> taxis = new ArrayList<Taxi>();
         //initialises all Taxi objects
         for (int n = 0; n < taxiNum; n++) {
             taxis.add(n, new Taxi(false,false,false));
         }
 
+        //scanner stuff
+        Scanner cmd = new Scanner(System.in);
+
+        //handles the taxi console business
+        taxiConsole(taxis, taxiNum,cmd);
+
+    }
+
+    //takes a number and adds that number of Taxi objects to an ArrayList
+    //also handles the method calls for each individual Taxi object
+    public static void taxiConsole(ArrayList<Taxi> taxis, int taxiNum, Scanner input){
+        consoleInterface();
         int num = input.nextInt();
         if(num == 1){
+            taxiAvailability(taxis, taxiNum, input);
+        }
+        if(num == 2){
+            taxiStopper(taxis, taxiNum, input);
+        }
+        if(num == 3){
+            taxiPause(taxis, taxiNum, input);
+        }
+    }
 
+    public static void taxiAvailability(ArrayList<Taxi> taxis, int taxiNum, Scanner input){
+        for (int n = 0; n < taxis.size(); n++) {
+            System.out.println("Taxi num: "+(n+1));
+            System.out.println("Available: "+taxis.get(n).getAvailability());
+            if(taxis.get(n).getPaused()) {
+                System.out.println("Is paused.");
+            }
+        }
+        int num = input.nextInt();
+        for (int n = 0; n < taxis.size(); n++) {
+            if(num <= 0 || num > taxis.size()+1){
+                System.out.println("Returning to main menu...\n");
+                taxiConsole(taxis, taxiNum, input);
+            }
+            if(num == (n+1)){
+                if(taxis.get(n).getPaused() == true){
+                    taxis.get(n).setStarted(true);
+                    System.out.println("Taxi num "+(n+1)+" is continuing its trip.");
+                    taxiConsole(taxis, taxiNum, input);
+                }else if(taxis.get(n).getAvailability() == false){
+                    System.out.println("Taxi num: "+(n+1)+" is not available!\n");
+                    taxiAvailability(taxis, taxiNum, input);
+                }else {
+                    taxis.get(n).setStarted(true);
+                    System.out.println("Taxi num " + (n + 1) + " is started.\n");
+                    taxiConsole(taxis, taxiNum, input);
+                }
+            }
+        }
+    }
+
+    public static void taxiStopper(ArrayList<Taxi> taxis, int taxiNum, Scanner input){
+        System.out.println("\nChoose a taxi to stop:");
+        for (int n = 0; n < taxis.size(); n++) {
+            if(taxis.get(n).getAvailability() == false){
+                System.out.println("Taxi num: "+(n+1)+"\nCurrently running.");
+            }
+        }
+        int num = input.nextInt();
+        for (int n = 0; n < taxis.size(); n++) {
+            if(num <= 0 || num > taxis.size()+1){
+                System.out.println("Returning to main menu...\n");
+                taxiConsole(taxis, taxiNum, input);
+            }
+            if(num == (n+1)){
+                if(taxis.get(n).getAvailability() == true){
+                    System.out.println("Taxi num: "+(n+1)+" is not available!\n");
+                    taxiStopper(taxis,taxiNum,input);
+                }else {
+                    taxis.get(n).setStarted(false);
+                    System.out.println("Taxi num " + (n + 1) + " has stopped.\n");
+                    taxis.get(n).getBill();
+                    taxiConsole(taxis, taxiNum, input);
+                }
+            }
+        }
+    }
+
+    public static void taxiPause(ArrayList<Taxi> taxis, int taxiNum, Scanner input){
+        System.out.println("\nChoose a taxi to stop:");
+        for (int n = 0; n < taxis.size(); n++) {
+            if(taxis.get(n).getAvailability() == false){
+                System.out.println("Taxi num: "+(n+1)+"\nCurrently running.");
+            }
+        }
+        int num = input.nextInt();
+        for (int n = 0; n < taxis.size(); n++) {
+            if(num <= 0 || num > taxis.size()+1){
+                System.out.println("Returning to main menu...\n");
+                taxiConsole(taxis, taxiNum, input);
+            }
+            if(num == (n+1)){
+                if(taxis.get(n).getAvailability() == true){
+                    System.out.println("Taxi num: "+(n+1)+" is not available!\n");
+                    taxiStopper(taxis,taxiNum,input);
+                }else {
+                    taxis.get(n).setPaused(true);
+                    System.out.println("Taxi num " + (n + 1) + " has paused its trip.\n");
+                    taxiConsole(taxis, taxiNum, input);
+                }
+            }
         }
     }
 
@@ -34,19 +132,6 @@ public class Main {
             "(4)Ask for price\n" +
             "(5)Free ride\n" +
             "Choose a <number> and hit “enter”:"
-        );
-    }
-
-    //method that handles the bill and takes in a variable for time to calculate cost
-    public static void bill(double time){
-        double perSecCost = 2.25; //decided to make this a variable so it can be changed if necessary
-        System.out.println(
-            "\nDamn Fast Taxis\n" +
-            "---------------\n" +
-            "Time: "+time+" seconds\n" +
-            "Price per second: "+perSecCost+" dollar\n" +
-            "Total price: "+(perSecCost*time)+" dollar\n" +
-            "Press any key to continue..."
         );
     }
 }
