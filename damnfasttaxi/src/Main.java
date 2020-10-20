@@ -18,23 +18,50 @@ public class Main {
         Scanner cmd = new Scanner(System.in);
 
         //handles the taxi console business
-        taxiConsole(taxis, taxiNum,cmd);
+        taxiConsole(taxis,taxiNum,cmd);
 
     }
 
     //takes a number and adds that number of Taxi objects to an ArrayList
     //also handles the method calls for each individual Taxi object
     public static void taxiConsole(ArrayList<Taxi> taxis, int taxiNum, Scanner input){
+        //shows interface
         consoleInterface();
+        //scanner which looks for int inputs
         int num = input.nextInt();
+
+        //start a ride
         if(num == 1){
             taxiAvailability(taxis, taxiNum, input);
         }
+        //stop a ride
         if(num == 2){
             taxiStopper(taxis, taxiNum, input);
         }
+        //pause a ride
         if(num == 3){
             taxiPause(taxis, taxiNum, input);
+        }
+        //ask for price (prints all ride prices)
+        if(num == 4){
+            for (int n = 0; n < taxis.size(); n++) {
+                System.out.println("Taxi num: "+(n+1));
+                if(taxis.get(n).getIsFree() == true){
+                    System.out.println("Is currently free.");
+                }else {
+                    System.out.println(taxis.get(n).getPerSecCost() + " dollars per second.");
+                }
+            }
+            System.out.println(""); //spacer
+            taxiConsole(taxis,taxiNum,input);
+        }
+        //make a ride free (once the ride is stopped it returns to normal price)
+        if(num == 5){
+            freeRide(taxis,taxiNum,input);
+        }
+        //stop program
+        if(num < 1 || num > 5){
+            System.out.println("Shutting down...");
         }
     }
 
@@ -43,7 +70,10 @@ public class Main {
             System.out.println("Taxi num: "+(n+1));
             System.out.println("Available: "+taxis.get(n).getAvailability());
             if(taxis.get(n).getPaused()) {
-                System.out.println("Is paused.");
+                System.out.println("This ride is  paused.");
+            }
+            if(taxis.get(n).getIsFree()){
+                System.out.println("This ride is free.");
             }
         }
         int num = input.nextInt();
@@ -55,7 +85,7 @@ public class Main {
             if(num == (n+1)){
                 if(taxis.get(n).getPaused() == true){
                     taxis.get(n).setStarted(true);
-                    System.out.println("Taxi num "+(n+1)+" is continuing its trip.");
+                    System.out.println("Taxi num "+(n+1)+" is continuing its trip.\n");
                     taxiConsole(taxis, taxiNum, input);
                 }else if(taxis.get(n).getAvailability() == false){
                     System.out.println("Taxi num: "+(n+1)+" is not available!\n");
@@ -115,7 +145,35 @@ public class Main {
                     taxiStopper(taxis,taxiNum,input);
                 }else {
                     taxis.get(n).setPaused(true);
-                    System.out.println("Taxi num " + (n + 1) + " has paused its trip.\n");
+                    System.out.println("Taxi num "+(n+1)+" has paused its trip.\n");
+                    taxiConsole(taxis, taxiNum, input);
+                }
+            }
+        }
+    }
+
+    public static void freeRide(ArrayList<Taxi> taxis, int taxiNum, Scanner input){
+        for (int n = 0; n < taxis.size(); n++) {
+            System.out.println("Taxi num: "+(n+1));
+            if(taxis.get(n).getIsFree()){
+                System.out.println("Is currently free.\n");
+            }else{
+                System.out.println("Currently costs: "+taxis.get(n).getPerSecCost()+" dollars per second.");
+            }
+        }
+        int num = input.nextInt();
+        for (int n = 0; n < taxis.size(); n++) {
+            if(num <= 0 || num > taxis.size()+1){
+                System.out.println("Returning to main menu...\n");
+                taxiConsole(taxis, taxiNum, input);
+            }
+            if(num == (n+1)){
+                if(taxis.get(n).getIsFree() == true){
+                    System.out.println("Taxi num: "+(n+1)+" is already free!\n");
+                    freeRide(taxis,taxiNum,input);
+                }else{
+                    taxis.get(n).setFree(true);
+                    System.out.println("Taxi num "+(n+1)+" has become a free ride.\n");
                     taxiConsole(taxis, taxiNum, input);
                 }
             }
